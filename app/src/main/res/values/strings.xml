@@ -1,4 +1,4 @@
 <resources>
     <string name="app_name">Task Manager</string>
-    <string name="action_settings">Settings</string>
+    <string name="action_completed_tasks">Show completed tasks</string>
 </resources>

@@ -11,6 +11,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".CompletedTasks"
+            android:label="Completed tasks"
             android:parentActivityName=".MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -18,6 +19,7 @@
         </activity>
         <activity
             android:name=".EditTask"
+            android:label="Edit task"
             android:parentActivityName=".MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -25,6 +27,7 @@
         </activity>
         <activity
             android:name=".AddTask"
+            android:label="Add task"
             android:parentActivityName=".MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
