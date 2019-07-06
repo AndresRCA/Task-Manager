@@ -1,5 +1,6 @@
 package com.example.taskmanager;
 
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,11 +14,12 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder> 
     private ArrayList<Task> task_data;
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
-        // each data item is just a string in this case
+
         public TextView description;
-        public CheckBox is_completed;
         public TextView date;
         public TextView time;
+        public CheckBox is_completed;
+
         public MyViewHolder(View v) {
             super(v);
             description = v.findViewById(R.id.description);
@@ -41,10 +43,12 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder> 
 
     @Override
     public void onBindViewHolder(TaskAdapter.MyViewHolder holder, int i) {
+        holder.itemView.setId(task_data.get(i).getId()); // the id will tell which checkbox is checked and which task to edit
+
         holder.description.setText(task_data.get(i).getDescription());
-        holder.is_completed.setChecked(task_data.get(i).getIs_completed());
         holder.date.setText(task_data.get(i).getComplete_time()); // for now I wont separate time and date
         holder.time.setText(task_data.get(i).getComplete_time());
+        holder.is_completed.setChecked(task_data.get(i).getIs_completed());
     }
 
     @Override

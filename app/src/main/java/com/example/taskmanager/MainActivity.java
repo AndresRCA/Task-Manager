@@ -12,6 +12,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewGroup;
+import android.widget.CheckBox;
 
 import java.text.DateFormat;
 import java.util.ArrayList;
@@ -42,15 +44,13 @@ public class MainActivity extends AppCompatActivity {
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
-        /*
-        * Llena task_data aqui usando la base de datos
-        * */
+        // lleno task_data con la base de datos
         dbHelper = new TaskOpenHelper(this);
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM tasks ORDER BY "+TaskOpenHelper.KEY_START_TIME,null);
+        Cursor cursor = db.rawQuery("SELECT * FROM tasks ORDER BY "+TaskOpenHelper.KEY_START_TIME,null); // selecciona todos en orden ascendente por tiempo de creacion
         task_data = new ArrayList<>();
         while(cursor.moveToNext()) {
-            long id = cursor.getLong(cursor.getColumnIndexOrThrow(TaskOpenHelper.KEY_ID));
+            int id = cursor.getInt(cursor.getColumnIndexOrThrow(TaskOpenHelper.KEY_ID));
             String description = cursor.getString(cursor.getColumnIndexOrThrow(TaskOpenHelper.KEY_TASK));
             String created_at = cursor.getString(cursor.getColumnIndexOrThrow(TaskOpenHelper.KEY_START_TIME));
             String complete_time = cursor.getString(cursor.getColumnIndexOrThrow(TaskOpenHelper.KEY_COMPLETE_TIME));
@@ -81,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void onActivityResult(int request_code, int result_code, Intent data) {
         super.onActivityResult(request_code, result_code, data);
-        // actualiza base de datos
+        // update db and adapter
     }
 
     @Override
@@ -112,8 +112,29 @@ public class MainActivity extends AppCompatActivity {
      * @param view
      */
     public void goToEdit(View view) {
+        ViewGroup parent = (ViewGroup) view.getParent();
+        CheckBox checkBox = (CheckBox) parent.getChildAt(1); // CheckBox is in position 1
+        if(checkBox.isChecked()) return; // if it's checked, don't edit
+
         Intent intent = new Intent(this, EditTask.class);
-        // agrega informacion del task en el intent aqui
+        int id = parent.getId(); // the id of the task essentially
+        intent.putExtra("id", id); // this will tell me which task to edit
         startActivityForResult(intent, EDIT_TASK);
+    }
+
+    /**
+     * Metodo que actualiza la base de datos y el adaptador cuando edito es status del task
+     * @param view
+     */
+    public void onCheckBoxClicked(View view) {
+        CheckBox checkBox = (CheckBox) view;
+        int id = ((ViewGroup) checkBox.getParent()).getId();
+        if(checkBox.isChecked()) {
+            // update db, replace created_at for complete_time
+
+        }
+        else {
+            checkBox.setChecked(true); // in a way I basically keep the completed status on
+        }
     }
 }
