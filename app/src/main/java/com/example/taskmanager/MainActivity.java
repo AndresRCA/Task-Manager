@@ -1,7 +1,8 @@
 package com.example.taskmanager;
 
-import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -13,13 +14,15 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
 
     private final static int ADD_TASK = 1;
     private final static int EDIT_TASK = 2;
-    private Task[] task_data;
+    private TaskOpenHelper dbHelper;
+    private ArrayList<Task> task_data;
     private RecyclerView recyclerView;
     private TaskAdapter mAdapter;
     private RecyclerView.LayoutManager layoutManager;
@@ -42,8 +45,22 @@ public class MainActivity extends AppCompatActivity {
         /*
         * Llena task_data aqui usando la base de datos
         * */
-        String date = DateFormat.getDateTimeInstance().format(new Date()); // if something breaks, it's here
-        task_data = new Task[]{new Task(1, "Tarea 1", date, date, true), new Task(2, "Tarea 2", date, date, false)};
+        dbHelper = new TaskOpenHelper(this);
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM tasks ORDER BY "+TaskOpenHelper.KEY_START_TIME,null);
+        task_data = new ArrayList<>();
+        while(cursor.moveToNext()) {
+            long id = cursor.getLong(cursor.getColumnIndexOrThrow(TaskOpenHelper.KEY_ID));
+            String description = cursor.getString(cursor.getColumnIndexOrThrow(TaskOpenHelper.KEY_TASK));
+            String created_at = cursor.getString(cursor.getColumnIndexOrThrow(TaskOpenHelper.KEY_START_TIME));
+            String complete_time = cursor.getString(cursor.getColumnIndexOrThrow(TaskOpenHelper.KEY_COMPLETE_TIME));
+            int bit = cursor.getInt(cursor.getColumnIndexOrThrow(TaskOpenHelper.KEY_IS_COMPLETED));
+            boolean is_completed = (bit == 1);
+            task_data.add(new Task(id, description, created_at, complete_time, is_completed));
+        }
+        /* aqui lo habia llenado sin la base de datos */
+        //String date = DateFormat.getDateTimeInstance().format(new Date()); // if something breaks, it's here
+        //task_data = new Task[]{new Task(1, "Tarea 1", date, date, true), new Task(2, "Tarea 2", date, date, false)};
 
         // specify an adapter (see also next example)
         mAdapter = new TaskAdapter(task_data);
@@ -90,8 +107,13 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * Metodo que inicia la actividad EditTask para editar un Task en especifico
+     * @param view
+     */
     public void goToEdit(View view) {
         Intent intent = new Intent(this, EditTask.class);
+        // agrega informacion del task en el intent aqui
         startActivityForResult(intent, EDIT_TASK);
     }
 }

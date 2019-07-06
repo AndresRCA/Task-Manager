@@ -7,8 +7,10 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder> {
-    private Task[] task_data;
+    private ArrayList<Task> task_data;
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
@@ -25,7 +27,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder> 
         }
     }
 
-    public TaskAdapter(Task[] task_data) {
+    public TaskAdapter(ArrayList<Task> task_data) {
         this.task_data = task_data;
     }
 
@@ -39,15 +41,15 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder> 
 
     @Override
     public void onBindViewHolder(TaskAdapter.MyViewHolder holder, int i) {
-        holder.description.setText(task_data[i].getDescription());
-        holder.is_completed.setChecked(task_data[i].getIs_completed());
-        holder.date.setText(task_data[i].getComplete_time()); // for now I wont separate time and date
-        holder.time.setText(task_data[i].getComplete_time());
+        holder.description.setText(task_data.get(i).getDescription());
+        holder.is_completed.setChecked(task_data.get(i).getIs_completed());
+        holder.date.setText(task_data.get(i).getComplete_time()); // for now I wont separate time and date
+        holder.time.setText(task_data.get(i).getComplete_time());
     }
 
     @Override
     public int getItemCount() {
-        return task_data.length;
+        return task_data.size();
     }
 }
 
