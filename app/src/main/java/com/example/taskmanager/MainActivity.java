@@ -12,9 +12,13 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import java.text.DateFormat;
+import java.util.Date;
+
 public class MainActivity extends AppCompatActivity {
 
     private final static int ADD_TASK = 1;
+    private final static int EDIT_TASK = 2;
     private Task[] task_data;
     private RecyclerView recyclerView;
     private TaskAdapter mAdapter;
@@ -38,7 +42,8 @@ public class MainActivity extends AppCompatActivity {
         /*
         * Llena task_data aqui usando la base de datos
         * */
-        task_data = new Task[]{new Task(1, "Tarea 1", "", "2019::29/05::12:00 PM", true), new Task(2, "Tarea 2", "", "2019::12/05::17:00 PM", false)};
+        String date = DateFormat.getDateTimeInstance().format(new Date()); // if something breaks, it's here
+        task_data = new Task[]{new Task(1, "Tarea 1", date, date, true), new Task(2, "Tarea 2", date, date, false)};
 
         // specify an adapter (see also next example)
         mAdapter = new TaskAdapter(task_data);
@@ -83,5 +88,10 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void goToEdit(View view) {
+        Intent intent = new Intent(this, EditTask.class);
+        startActivityForResult(intent, EDIT_TASK);
     }
 }
