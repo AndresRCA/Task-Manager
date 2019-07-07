@@ -15,9 +15,7 @@ import android.view.MenuItem;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 
-import java.text.DateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -58,9 +56,6 @@ public class MainActivity extends AppCompatActivity {
             boolean is_completed = (bit == 1);
             task_data.add(new Task(id, description, created_at, complete_time, is_completed));
         }
-        /* aqui lo habia llenado sin la base de datos */
-        //String date = DateFormat.getDateTimeInstance().format(new Date()); // if something breaks, it's here
-        //task_data = new Task[]{new Task(1, "Tarea 1", date, date, true), new Task(2, "Tarea 2", date, date, false)};
 
         // specify an adapter (see also next example)
         mAdapter = new TaskAdapter(task_data);

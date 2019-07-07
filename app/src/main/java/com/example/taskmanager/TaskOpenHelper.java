@@ -4,9 +4,9 @@ import android.content.ContentValues;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
-
-import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 public class TaskOpenHelper extends SQLiteOpenHelper {
 
@@ -21,12 +21,12 @@ public class TaskOpenHelper extends SQLiteOpenHelper {
     public final static String KEY_COMPLETE_TIME = "complete_time";
     public final static String KEY_IS_COMPLETED = "is_completed";
 
-    // CREATE TABLE tasks (id INTEGER PRIMARY KEY, description TEXT, created_at DATETIME DEFAULT CURRENT_TIMESTAMP, complete_time DATETIME, is_completed BIT); me faltan las demas columnas
+    // CREATE TABLE tasks (id INTEGER PRIMARY KEY, description TEXT, created_at TIMESTAMP, complete_time TIMESTAMP, is_completed BIT); me faltan las demas columnas
     private static final String TASKS_TABLE_CREATE = "CREATE TABLE "+TASKS_TABLE+
             " ("+KEY_ID+" INTEGER PRIMARY KEY, "
             +KEY_TASK+" TEXT, "
-            +KEY_START_TIME+" DATETIME DEFAULT CURRENT_TIMESTAMP, "
-            +KEY_COMPLETE_TIME+" DATETIME, "
+            +KEY_START_TIME+" TIMESTAMP, "
+            +KEY_COMPLETE_TIME+" TIMESTAMP, "
             +KEY_IS_COMPLETED+" BIT NOT NULL DEFAULT 0);"; // a boolean basically
 
     private SQLiteDatabase mWritableDB;
@@ -47,7 +47,8 @@ public class TaskOpenHelper extends SQLiteOpenHelper {
      * @param db
      */
     private void fillDatabaseWithData(SQLiteDatabase db) {
-        String date = DateFormat.getDateTimeInstance().format(new Date()); // if something breaks, it's here
+        String date_time = getDateTime();
+
         // Create a container for the data.
         ContentValues values = new ContentValues();
         // Aqui ingreso lo necesario para dos tasks
@@ -55,12 +56,22 @@ public class TaskOpenHelper extends SQLiteOpenHelper {
             // Put column/value pairs into the container.
             // put() overrides existing values.
             values.put(KEY_TASK, "Tarea "+(i+1));
-            //values.put(KEY_START_TIME, date);
-            values.put(KEY_COMPLETE_TIME, date);
+            values.put(KEY_START_TIME, date_time);
+            values.put(KEY_COMPLETE_TIME, date_time);
             //values.put(KEY_IS_COMPLETED, tasks[i].getIs_completed());
             db.insert(TASKS_TABLE, null, values);
         }
 
+    }
+
+    /**
+     * Metodo que retorna el timestamp actual en el formato de la tabla de la base de datos
+     * @return
+     */
+    private String getDateTime() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+        Date date = new Date();
+        return dateFormat.format(date);
     }
 
     @Override
