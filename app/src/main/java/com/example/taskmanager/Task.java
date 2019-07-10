@@ -34,5 +34,13 @@ public class Task {
     public boolean getIs_completed() {
         return is_completed;
     }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setComplete_time(String complete_time) {
+        this.complete_time = complete_time;
+    }
 }
 

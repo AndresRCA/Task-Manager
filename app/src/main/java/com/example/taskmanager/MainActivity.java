@@ -77,7 +77,29 @@ public class MainActivity extends AppCompatActivity {
 
     public void onActivityResult(int request_code, int result_code, Intent data) {
         super.onActivityResult(request_code, result_code, data);
-        // update db and adapter
+        if(request_code == EDIT_TASK) {
+            if(result_code == RESULT_OK) {
+                // update adapter
+                int id = data.getIntExtra("id", -1);
+                String new_description = data.getStringExtra("description");
+                String new_complete_time = data.getStringExtra("complete_time");
+                Task task;
+                for(int i = 0; i < task_data.size(); i++) {
+                    task = task_data.get(i);
+                    if(task.getId() == id) {
+                        task.setDescription(new_description);
+                        task.setComplete_time(new_complete_time);
+                        mAdapter.notifyDataSetChanged();
+                        break;
+                    }
+                }
+            }
+        }
+        else if(request_code == ADD_TASK) {
+            if(result_code == RESULT_OK) {
+                // update database and adapter
+            }
+        }
     }
 
     @Override

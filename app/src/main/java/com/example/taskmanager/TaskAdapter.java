@@ -1,6 +1,5 @@
 package com.example.taskmanager;
 
-import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -46,14 +45,28 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder> 
         holder.itemView.setId(task_data.get(i).getId()); // the id will tell which checkbox is checked and which task to edit
 
         holder.description.setText(task_data.get(i).getDescription());
-        holder.date.setText(task_data.get(i).getCreated_at()); // for now I wont separate time and date
-        holder.time.setText(""+task_data.get(i).getComplete_time());
+        holder.date.setText(getDate(task_data.get(i).getComplete_time()));
+        holder.time.setText(getTime(task_data.get(i).getComplete_time()));
         holder.is_completed.setChecked(task_data.get(i).getIs_completed());
     }
 
-    /*private String getTime() {
+    /**
+     * metodo que retorna yyyy-mm-dd
+     * @param full_date
+     * @return
+     */
+    private String getDate(String full_date) {
+        return full_date.split(" ")[0];
+    }
 
-    }*/
+    /**
+     * metodo que retorna HH:MM:SS
+     * @param full_date
+     * @return
+     */
+    private String getTime(String full_date) {
+        return full_date.split(" ")[1];
+    }
 
     @Override
     public int getItemCount() {
