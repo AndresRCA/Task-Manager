@@ -1,8 +1,8 @@
 package com.example.taskmanager;
 
+import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -14,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -21,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
 
     private final static int ADD_TASK = 1;
     private final static int EDIT_TASK = 2;
-    private TaskOpenHelper dbHelper;
+    public static TaskOpenHelper dbHelper;
     private ArrayList<Task> task_data;
     private RecyclerView recyclerView;
     private TaskAdapter mAdapter;
@@ -44,8 +45,7 @@ public class MainActivity extends AppCompatActivity {
 
         // lleno task_data con la base de datos
         dbHelper = new TaskOpenHelper(this);
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM tasks ORDER BY "+TaskOpenHelper.KEY_START_TIME,null); // selecciona todos en orden ascendente por tiempo de creacion
+        Cursor cursor = dbHelper.query("SELECT * FROM tasks ORDER BY "+TaskOpenHelper.KEY_START_TIME, TaskOpenHelper.READ); // selecciona todos en orden ascendente por tiempo de creacion
         task_data = new ArrayList<>();
         while(cursor.moveToNext()) {
             int id = cursor.getInt(cursor.getColumnIndexOrThrow(TaskOpenHelper.KEY_ID));
@@ -56,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
             boolean is_completed = (bit == 1);
             task_data.add(new Task(id, description, created_at, complete_time, is_completed));
         }
+        cursor.close();
 
         // specify an adapter (see also next example)
         mAdapter = new TaskAdapter(task_data);
@@ -112,6 +113,15 @@ public class MainActivity extends AppCompatActivity {
         if(checkBox.isChecked()) return; // if it's checked, don't edit
 
         Intent intent = new Intent(this, EditTask.class);
+
+        ViewGroup wrapper = (ViewGroup) view;
+        String description = ((TextView) wrapper.getChildAt(0)).getText().toString();
+        String date = ((TextView) wrapper.getChildAt(1)).getText().toString();
+        String time = ((TextView) wrapper.getChildAt(2)).getText().toString();
+        intent.putExtra("description", description);
+        intent.putExtra("date", date);
+        intent.putExtra("time", time);
+
         int id = parent.getId(); // the id of the task essentially
         intent.putExtra("id", id); // this will tell me which task to edit
         startActivityForResult(intent, EDIT_TASK);
@@ -126,7 +136,9 @@ public class MainActivity extends AppCompatActivity {
         int id = ((ViewGroup) checkBox.getParent()).getId();
         if(checkBox.isChecked()) {
             // update db, replace created_at for complete_time
-
+            ContentValues cv = new ContentValues();
+            cv.put(TaskOpenHelper.KEY_IS_COMPLETED, 1);
+            dbHelper.getWritableDatabase().update("tasks", cv, "id ="+id, null);
         }
         else {
             checkBox.setChecked(true); // in a way I basically keep the completed status on
