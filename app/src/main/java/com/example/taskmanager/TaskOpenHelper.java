@@ -122,6 +122,11 @@ public class TaskOpenHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
+        // SAVE USER DATA FIRST!!!
+        Log.w(TaskOpenHelper.class.getName(),
+        "Upgrading database from version " + oldVersion + " to "
+        + newVersion + ", which will destroy all old data");
+        db.execSQL("DROP TABLE IF EXISTS " + TASKS_TABLE); // guess I'll lose my data, whoops
+        onCreate(db);
     }
 }
