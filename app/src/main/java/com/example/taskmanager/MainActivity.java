@@ -163,10 +163,22 @@ public class MainActivity extends AppCompatActivity {
             // update db, replace created_at for complete_time
             ContentValues cv = new ContentValues();
             cv.put(TaskOpenHelper.KEY_IS_COMPLETED, 1);
-            dbHelper.getWritableDatabase().update("tasks", cv, "id ="+id, null);
+            cv.put(TaskOpenHelper.KEY_START_TIME, findTaskById(task_data, id).getCreated_at());
+            dbHelper.update(cv, id);
         }
         else {
             checkBox.setChecked(true); // in a way I basically keep the completed status on
         }
+    }
+
+    private Task findTaskById(ArrayList<Task> data, int id) {
+        Task task;
+        for(int i = 0; i < data.size(); i++) {
+            task = data.get(i);
+            if(task.getId() == id) {
+                return task;
+            }
+        }
+        return task; // if no id is found it will return the last task, but I know this function will never return this
     }
 }
