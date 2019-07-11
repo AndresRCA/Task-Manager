@@ -85,7 +85,7 @@ public class EditTask extends AppCompatActivity {
      * @param view
      */
     public void changeDate(View view) {
-        //int[] y_m_d = getDateOrTime(date, "-");
+        //int[] y_m_d = MyTime.getDateOrTime(date, "-");
         Calendar cal = Calendar.getInstance(); // instead of this, show current year, month and day from sql
         int year = cal.get(Calendar.YEAR);
         int month = cal.get(Calendar.MONTH);
@@ -103,26 +103,13 @@ public class EditTask extends AppCompatActivity {
      * @param view
      */
     public void changeTime(View view) {
-        //int[] hour_min_sec = getDateOrTime(time, ":");
+        //int[] hour_min_sec = MyTime.getDateOrTime(time, ":");
         Calendar c = Calendar.getInstance();
         int hour = c.get(Calendar.HOUR_OF_DAY);
         int minute = c.get(Calendar.MINUTE);
         Toast.makeText(this, hour+":"+minute, Toast.LENGTH_SHORT);
         TimePickerDialog dialog = new TimePickerDialog(this, mTimeSetListener, hour, minute, DateFormat.is24HourFormat(this));
         dialog.show(); // show time dialog
-    }
-
-    /**
-     * metodo que retorna los numeros dentro del string yyyy-mm-dd o HH:MM:SS
-     * @return date_numbers -> {yyyy, mm, dd} o {HH:MM:SS}
-     */
-    private int[] getDateOrTime(String info, String regex) {
-        String[] date_info = info.split(regex);
-        int i1 = Integer.parseInt(date_info[0]);
-        int i2 = Integer.parseInt(date_info[1]);
-        int i3 = Integer.parseInt(date_info[2]);
-        int[] date_numbers = {i1, i2, i3};
-        return date_numbers;
     }
 
     /**

@@ -54,7 +54,7 @@ public class TaskOpenHelper extends SQLiteOpenHelper {
      * @param db
      */
     private void fillDatabaseWithData(SQLiteDatabase db) {
-        String date_time = getDateTime();
+        String date_time = MyTime.getDateTime();
 
         // Create a container for the data.
         ContentValues values = new ContentValues();
@@ -108,26 +108,16 @@ public class TaskOpenHelper extends SQLiteOpenHelper {
     }
 
     public long insert(ContentValues cv){
-    long newId = 0;
-    try {
-        if (mWritableDB == null) {
-        mWritableDB = getWritableDatabase();
+        long newId = 0;
+        try {
+            if (mWritableDB == null) {
+            mWritableDB = getWritableDatabase();
+            }
+            newId = mWritableDB.insert(TASKS_TABLE, null, cv);
+        } catch (Exception e) {
+            Log.d(TAG, "INSERT EXCEPTION! " + e.getMessage());
         }
-        newId = mWritableDB.insert(TASKS_TABLE, null, cv);
-    } catch (Exception e) {
-        Log.d(TAG, "INSERT EXCEPTION! " + e.getMessage());
-    }
-    return newId;
-    }
-
-    /**
-     * Metodo que retorna el timestamp actual en el formato de la tabla de la base de datos
-     * @return
-     */
-    public static String getDateTime() {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
-        Date date = new Date();
-        return dateFormat.format(date);
+        return newId;
     }
 
     @Override
