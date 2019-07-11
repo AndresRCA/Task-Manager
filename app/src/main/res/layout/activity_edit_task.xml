@@ -61,7 +61,7 @@
         android:layout_marginTop="8dp"
         android:onClick="changeDate"
         android:text="Change date"
-        android:textSize="6sp"
+        android:textSize="8sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/edit_date" />
 
@@ -74,7 +74,7 @@
         android:layout_marginTop="8dp"
         android:onClick="changeTime"
         android:text="Change time"
-        android:textSize="6sp"
+        android:textSize="8sp"
         app:layout_constraintStart_toEndOf="@+id/bt_date"
         app:layout_constraintTop_toBottomOf="@+id/edit_time" />
 

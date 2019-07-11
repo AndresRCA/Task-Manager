@@ -27,14 +27,6 @@ public class EditTask extends AppCompatActivity {
     private EditText edit_description;
 
     private int id;
-    private String date;
-    private String time;
-
-    private int year;
-    private int month;
-    private int day;
-    private int hours;
-    private int minutes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,9 +47,6 @@ public class EditTask extends AppCompatActivity {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                 month++; // months starts with 0 (Jan = 0)
-                EditTask.this.year = year;
-                EditTask.this.month = month;
-                EditTask.this.day = dayOfMonth;
 
                 Toast.makeText(EditTask.this, "date: "+year+"/"+month+"/"+dayOfMonth, Toast.LENGTH_SHORT).show();
                 EditTask.this.edit_date.setText(year+"-"+month+"-"+dayOfMonth);
@@ -68,9 +57,7 @@ public class EditTask extends AppCompatActivity {
         mTimeSetListener = new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                EditTask.this.hours = hourOfDay;
-                EditTask.this.minutes = minute;
-                Toast.makeText(EditTask.this, hourOfDay+":"+minute, Toast.LENGTH_SHORT);
+                Toast.makeText(EditTask.this, hourOfDay+":"+minute, Toast.LENGTH_SHORT).show();
                 EditTask.this.edit_time.setText(hourOfDay+":"+minute);
             }
         };
@@ -114,7 +101,7 @@ public class EditTask extends AppCompatActivity {
      */
     public void applyChanges(View view) {
         String new_description = edit_description.getText().toString();
-        if(new_description == "") {
+        if(new_description.matches("")) {
             Toast.makeText(this, "description can't be empty", Toast.LENGTH_SHORT);
             return;
         }

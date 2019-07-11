@@ -128,7 +128,6 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(this, CompletedTasks.class);
             startActivity(intent);
         }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -142,17 +141,18 @@ public class MainActivity extends AppCompatActivity {
         if(checkBox.isChecked()) return; // if it's checked, don't edit
 
         Intent intent = new Intent(this, EditTask.class);
+        int id = parent.getId(); // the id of the task essentially
+        intent.putExtra("id", id); // this will tell me which task to edit
+        Task task = findTaskById(task_data, id);
 
-        ViewGroup wrapper = (ViewGroup) view;
-        String description = ((TextView) wrapper.getChildAt(0)).getText().toString();
-        String date = ((TextView) wrapper.getChildAt(1)).getText().toString();
-        String time = ((TextView) wrapper.getChildAt(2)).getText().toString();
+        String description = task.getDescription();
+        String date = MyTime.getDate(task.getComplete_time());
+        String time = MyTime.getTime(task.getComplete_time());
+
         intent.putExtra("description", description);
         intent.putExtra("date", date);
         intent.putExtra("time", time);
 
-        int id = parent.getId(); // the id of the task essentially
-        intent.putExtra("id", id); // this will tell me which task to edit
         startActivityForResult(intent, EDIT_TASK);
     }
 
@@ -167,7 +167,7 @@ public class MainActivity extends AppCompatActivity {
             // update db, replace created_at for complete_time
             ContentValues cv = new ContentValues();
             cv.put(TaskOpenHelper.KEY_IS_COMPLETED, 1);
-            cv.put(TaskOpenHelper.KEY_START_TIME, findTaskById(task_data, id).getCreated_at());
+            cv.put(TaskOpenHelper.KEY_START_TIME, findTaskById(task_data, id).getComplete_time());
             dbHelper.update(cv, id);
         }
         else {
@@ -175,6 +175,12 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * metodo que retorna un task por su id
+     * @param data
+     * @param id
+     * @return
+     */
     private Task findTaskById(ArrayList<Task> data, int id) {
         Task task;
         for(int i = 0; i < data.size(); i++) {

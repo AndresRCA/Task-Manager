@@ -45,8 +45,8 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder> 
         holder.itemView.setId(task_data.get(i).getId()); // the id will tell which checkbox is checked and which task to edit
 
         holder.description.setText(task_data.get(i).getDescription());
-        holder.date.setText(MyTime.getDate(task_data.get(i).getComplete_time()));
-        holder.time.setText(MyTime.getTime(task_data.get(i).getComplete_time()));
+        holder.date.setText(MyTime.getDate(task_data.get(i).getCreated_at()));
+        holder.time.setText(MyTime.getTime(task_data.get(i).getCreated_at()));
         holder.is_completed.setChecked(task_data.get(i).getIs_completed());
     }
 

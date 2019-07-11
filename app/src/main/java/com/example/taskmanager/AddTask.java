@@ -92,11 +92,21 @@ public class AddTask extends AppCompatActivity {
      */
     public void addTask(View view) {
         String description = add_description.getText().toString();
-        if(description == "") {
-            Toast.makeText(this, "description can't be empty", Toast.LENGTH_SHORT);
+        if(description.matches("")) {
+            Toast.makeText(this, "description can't be empty", Toast.LENGTH_SHORT).show();
             return;
         }
-        String complete_time = add_date.getText().toString()+" "+add_time.getText().toString();
+        String date = add_date.getText().toString();
+        if(date.matches("----:--:--")) {
+            Toast.makeText(this, "date can't be empty", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        String time = add_time.getText().toString();
+        if(time.matches("--:--:--")) {
+            Toast.makeText(this, "time can't be empty", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        String complete_time = date+" "+time;
         ContentValues cv = new ContentValues();
         cv.put(TaskOpenHelper.KEY_TASK, description);
         cv.put(TaskOpenHelper.KEY_COMPLETE_TIME, complete_time);
