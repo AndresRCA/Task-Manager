@@ -38,7 +38,7 @@
         android:layout_marginLeft="36dp"
         android:text=""
         app:layout_constraintBaseline_toBaselineOf="@+id/add_date"
-        app:layout_constraintStart_toEndOf="@+id/edit_date" />
+        app:layout_constraintStart_toEndOf="@+id/add_date" />
 
     <Button
         android:id="@+id/bt_add"

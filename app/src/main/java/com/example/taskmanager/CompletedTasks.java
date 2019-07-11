@@ -1,7 +1,12 @@
 package com.example.taskmanager;
 
+import android.database.Cursor;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+
+import java.util.ArrayList;
 
 public class CompletedTasks extends AppCompatActivity {
 
@@ -26,7 +31,7 @@ public class CompletedTasks extends AppCompatActivity {
         recyclerView.setLayoutManager(layoutManager);
 
         // lleno task_data con la base de datos
-        Cursor cursor = Main.Activity.dbHelper.query("SELECT * FROM tasks WHERE is_completed = 1", TaskOpenHelper.READ);     
+        Cursor cursor = MainActivity.dbHelper.query("SELECT * FROM tasks WHERE is_completed = 1", TaskOpenHelper.READ);
         task_data = new ArrayList<>();
         while(cursor.moveToNext()) {
             int id = cursor.getInt(cursor.getColumnIndexOrThrow(TaskOpenHelper.KEY_ID));

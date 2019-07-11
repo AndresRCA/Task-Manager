@@ -97,8 +97,12 @@ public class MainActivity extends AppCompatActivity {
         }
         else if(request_code == ADD_TASK) {
             if(result_code == RESULT_OK) {
-                // adapter
-                Task task = new Task(data.getIntExtra("id"), data.getStringExtra("created_at"), data.getStringExtra("complete_time"), false);
+                // update adapter
+                int id = data.getIntExtra("id", -1);
+                String description = data.getStringExtra("description");
+                String created_at = data.getStringExtra("created_at");
+                String complete_time = data.getStringExtra("complete_time");
+                Task task = new Task(id, description, created_at, complete_time, false);
                 task_data.add(task);
                 mAdapter.notifyDataSetChanged();
             }            
@@ -179,6 +183,6 @@ public class MainActivity extends AppCompatActivity {
                 return task;
             }
         }
-        return task; // if no id is found it will return the last task, but I know this function will never return this
+        return new Task(-1, "", "", "", false); // if no id is found it will return the last task, but I know this function will never return this
     }
 }

@@ -1,8 +1,22 @@
 package com.example.taskmanager;
 
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
+import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.content.ContentValues;
+import android.text.format.DateFormat;
+import android.view.View;
+import android.widget.DatePicker;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.TimePicker;
+import android.widget.Toast;
+
+import java.util.Calendar;
 
 public class AddTask extends AppCompatActivity {
 
@@ -77,7 +91,7 @@ public class AddTask extends AppCompatActivity {
      * @param view
      */
     public void addTask(View view) {
-    	String description = add_description.getText().toString();
+        String description = add_description.getText().toString();
         if(description == "") {
             Toast.makeText(this, "description can't be empty", Toast.LENGTH_SHORT);
             return;
@@ -92,9 +106,9 @@ public class AddTask extends AppCompatActivity {
         Intent intent = new Intent();
         intent.putExtra("id", id);
         intent.putExtra("description", description);
-        intent.putExtra("created_at", TaskOpenHelper.getDateTime());
+        intent.putExtra("created_at", MyTime.getDateTime());
         intent.putExtra("complete_time", complete_time);
-        // is_completed is default 0 
+        // is_completed is default 0
         setResult(RESULT_OK, intent);
         finish();
     }

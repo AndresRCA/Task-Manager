@@ -7,10 +7,6 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
-
 public class TaskOpenHelper extends SQLiteOpenHelper {
 
     private final static int DATABASE_VERSION = 1;
@@ -115,7 +111,7 @@ public class TaskOpenHelper extends SQLiteOpenHelper {
             }
             newId = mWritableDB.insert(TASKS_TABLE, null, cv);
         } catch (Exception e) {
-            Log.d(TAG, "INSERT EXCEPTION! " + e.getMessage());
+            Log.d("INSERT", "INSERT EXCEPTION! " + e.getMessage());
         }
         return newId;
     }
