@@ -15,5 +15,14 @@
         android:layout_height="wrap_content"
         android:src="@drawable/ic_launcher_foreground" />
 
+    <EditText
+        android:id="@+id/nombreTarea"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="Agregue la Tarea Deseada"
+        android:inputType="textPersonName"
+        android:text="" />
+
 
 </android.support.constraint.ConstraintLayout>
