@@ -97,8 +97,11 @@ public class MainActivity extends AppCompatActivity {
         }
         else if(request_code == ADD_TASK) {
             if(result_code == RESULT_OK) {
-                // update database and adapter
-            }
+                // adapter
+                Task task = new Task(data.getIntExtra("id"), data.getStringExtra("created_at"), data.getStringExtra("complete_time"), false);
+                task_data.add(task);
+                mAdapter.notifyDataSetChanged();
+            }            
         }
     }
 

@@ -107,11 +107,24 @@ public class TaskOpenHelper extends SQLiteOpenHelper {
         }
     }
 
+    public long insert(ContentValues cv){
+    long newId = 0;
+    try {
+        if (mWritableDB == null) {
+        mWritableDB = getWritableDatabase();
+        }
+        newId = mWritableDB.insert(TASKS_TABLE, null, cv);
+    } catch (Exception e) {
+        Log.d(TAG, "INSERT EXCEPTION! " + e.getMessage());
+    }
+    return newId;
+    }
+
     /**
      * Metodo que retorna el timestamp actual en el formato de la tabla de la base de datos
      * @return
      */
-    private String getDateTime() {
+    public static String getDateTime() {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
         Date date = new Date();
         return dateFormat.format(date);
